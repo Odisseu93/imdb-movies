@@ -1,16 +1,21 @@
-# This is a sample Python script.
+import requests
+from bs4 import BeautifulSoup
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+url = 'https://www.imdb.com/chart/top'
 
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+headers = {'User-Agent': "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 \
+(KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36"}
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+site = requests.get(url, headers= headers)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+soup = BeautifulSoup(site.content, 'html.parser')
+
+
+lis = soup.findAll('li',{'class': 'ipc-metadata-list-summary-item'})
+titles = soup.findAll('h3', {'class': 'ipc-title__text'})
+
+
+for li in lis:
+    print(li.text)
+
